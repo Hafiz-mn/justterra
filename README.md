@@ -1,0 +1,2 @@
+# justterra
+only terra
