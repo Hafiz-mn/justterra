@@ -3,24 +3,34 @@ provider "aws" {
 }
 
 module "vpc" {
-  source = "../../modules/vpc"
+  source = "../../../modules/vpc"
 
   vpc_name          = "STAGE-VPC"
   vpc_cidr          = "10.0.0.0/16"
   azs               = ["eu-north-1a", "eu-north-1b"]
-  private_subnets   = ["10.2.1.0/24", "10.2.2.0/24"]
-  public_subnets    = ["10.2.101.0/24","10.2.102.0/24"]
-  enable_dns_hostnames = true
+  private_subnets   = ["10.0.11.0/24", "10.0.12.0/24"]
+  public_subnets    = ["10.0.21.0/24","10.0.22.0/24"]
+  
 }
 
 module "ecs" {
-  source = "../../modules/ecs"
+  source = "../../../modules/ecs"
 
-  cluster_name   = "stage-ecs-cluster"
-  vpc_id         = module.vpc.vpc_id
-  public_subnets = module.vpc.public_subnets
-  alb_subnets    = module.vpc.public_subnets
-  alb_vpc_id     = module.vpc.vpc_id
+  cluster_name      = "stage-ecs-cluster"
+  task_family       = "stage-task-family"
+  cpu               = 256
+  memory            = 512
+  container_name    = "stage-app"
+  container_image   = "nginx:latest"
+  container_port    = 80
+  service_name      = "stage-ecs-service"
+  desired_count     = 2
+  alb_name          = "stage-alb"
+  target_group_name = "stage-tg"
+  alb_sg_name       = "stage-alb-sg"
+  subnets         = module.vpc.public_subnets
+  alb_subnets     = module.vpc.public_subnets
+  alb_vpc_id      = module.vpc.vpc_id
 }
 
 terraform {

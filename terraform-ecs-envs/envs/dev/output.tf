@@ -15,16 +15,16 @@ output "private_subnets" {
 
 output "ecs_cluster_id" {
   description = "The ECS Cluster ID"
-  value       = aws_ecs_cluster.ecs.id
+  value       = module.ecs.ecs_cluster_id
 }
 
 output "ecs_service_name" {
   description = "The ECS Service name"
-  value       = aws_ecs_service.nginx.name
+  value       = module.ecs.ecs_service_name
 }
 
 output "alb_dns_name" {
   description = "The DNS name of the ALB"
-  value       = aws_lb.app.dns_name
+  value       = module.ecs.alb_dns_name
 }
 

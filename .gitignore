@@ -3,3 +3,45 @@
 **/*.tfstate
 **/*.tfstate.backup
 **/.terraform.lock.hcl
+*.tfstate
+*.tfstate.*
+.terraform/
+crash.log
+*.tfvars
+# Terraform state files
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+
+# CLI configuration files
+.terraform/
+.terraform.lock.hcl
+
+# Sensitive variable files
+*.tfvars
+*.tfvars.json
+
+# Local overrides
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Terraform plan files
+*.tfplan
+
+# IDE/editor files
+*.swp
+*.swo
+*.idea/
+*.vscode/
+*.DS_Store
+
+# Logs
+*.log
+
+# Ignore any nested .git inside modules (like your dev/prod/stage .terraform/modules)
+**/.git/
+ 
