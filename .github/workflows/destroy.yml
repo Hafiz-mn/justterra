@@ -38,10 +38,10 @@ jobs:
           aws-region: eu-north-1
 
       - name: Terraform Init
-        working-directory: ./terraform-ecs-envs/envs/${{ steps.env.outputs.environment }}
+        working-directory: terraform-ecs-envs/envs/${{ steps.env.outputs.environment }}
         run: terraform init
 
       - name: Terraform Destroy
-        working-directory: ./terraform-ecs-envs/envs/${{ steps.env.outputs.environment }}
+        working-directory: terraform-ecs-envs/envs/${{ steps.env.outputs.environment }}
         run: terraform destroy -auto-approve
 
