@@ -44,22 +44,22 @@ jobs:
             echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
            fi
 
-      -name : Terraform Init
-         working-directory: ${{ steps.env.outputs.environment }}
-         run: terraform init
+   - name : Terraform Init
+     working-directory: ${{ steps.env.outputs.environment }}
+     run: terraform init
 
-      - name: Terraform Validate
-         working-directory: ${{ steps.env.outputs.environment }}
-         run: terraform validate
+   - name: Terraform Validate
+     working-directory: ${{ steps.env.outputs.environment }}
+     run: terraform validate
 
-      - name: Terraform Plan
-         working-directory: ${{ steps.env.outputs.environment }}
-         run: terraform plan -out=tfplan
+   - name: Terraform Plan
+     working-directory: ${{ steps.env.outputs.environment }}
+     run: terraform plan -out=tfplan
 
-      - name: Terraform Apply
-         if: github.ref == 'refs/heads/main'
-         working-directory: ${{ steps.env.outputs.environment }}
-         run: terraform apply -auto-approve tfplan
+   - name: Terraform Apply
+     if: github.ref == 'refs/heads/main'
+     working-directory: ${{ steps.env.outputs.environment }}
+     run: terraform apply -auto-approve tfplan
    
 
 
