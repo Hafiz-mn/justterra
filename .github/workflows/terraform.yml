@@ -7,7 +7,7 @@ on:
      inputs: 
        environment:
          description: "Choose environment"
-         required: no
+         required: yes
          default: dev
          type: choice
          options:
