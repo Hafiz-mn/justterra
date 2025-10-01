@@ -4,6 +4,16 @@ on:
   push:
     branches: [ "main" ]
   workflow_dispatch:
+     inputs: 
+       environment:
+         description: "Choose environment"
+         required: no
+         default: dev
+         type: choice
+         options:
+           - dev
+           - stage
+           - prod
 
 jobs:
   terraform:
@@ -20,6 +30,36 @@ jobs:
    
    - name: Aws Credentials
      uses: aws-actions/configure-aws-credentials@v5.0.0
+     with:
+      aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
+      aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+      aws-region: eu-north-1
+
+   - name: Determine Environment
+     id: env
+     run : |
+           if [ "${{ github.event_name }}" == "push" ]; then
+            echo "environment=dev" >> $GITHUB_OUTPUT
+           else
+            echo "environment=${{ github.event.inputs.environment }}" >> $GITHUB_OUTPUT
+           fi
+
+      -name : Terraform Init
+         working-directory: ${{ steps.env.outputs.environment }}
+         run: terraform init
+
+      - name: Terraform Validate
+         working-directory: ${{ steps.env.outputs.environment }}
+         run: terraform validate
+
+      - name: Terraform Plan
+         working-directory: ${{ steps.env.outputs.environment }}
+         run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+         if: github.ref == 'refs/heads/main'
+         working-directory: ${{ steps.env.outputs.environment }}
+         run: terraform apply -auto-approve tfplan
    
 
 
